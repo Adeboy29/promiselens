@@ -17,11 +17,11 @@ for(const [name,hash] of Object.entries(hashes)){
 }
 const deployedCode=await client.getContractCode(contract);
 const normalized=s=>s.replaceAll('\r\n','\n').trim();
-if(normalized(deployedCode)!==normalized(readFileSync('contracts/PromiseLens.py','utf8')))throw Error('Source differs from deployed contract');
+if(normalized(deployedCode)!==normalized(readFileSync('PromiseLens.py','utf8')))throw Error('Source differs from deployed contract');
 const codeSha256=createHash('sha256').update(normalized(deployedCode)).digest('hex');
 const read=async functionName=>JSON.parse(await client.readContract({address:contract,functionName,args:[promiseId],transactionHashVariant:'latest-final'}));
 const promise=await read('get_promise'),history=await read('get_history');
 if(history.length!==1||promise.evaluations!==1||history[0].status!=='Insufficient evidence')throw Error('Unexpected finalized verdict');
 const proof={verifiedAt:new Date().toISOString(),network:'GenLayer hosted Studio development network (not mainnet or Bradbury)',chainId:61999,rpc:'https://studio.genlayer.com/api',contract,codeSha256,codeMatchesSource:true,promiseId,receipts,promise,history};
-writeFileSync('dist/verification.json',JSON.stringify(proof,null,2));
+writeFileSync('verification.json',JSON.stringify(proof,null,2));
 console.log('Verified live evaluation:',history[0].status,'Source matches deployed code.');

@@ -1,13 +1,15 @@
 {
   "name": "promiselens",
   "version": "1.0.0",
-  "description": "",
+  "description": "Evidence-based promise tracking with a GenLayer Intelligent Contract",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.mjs",
+    "test": "node build-check.mjs",
+    "verify:live": "node verify-live.mjs"
   },
   "keywords": [],
   "author": "",
